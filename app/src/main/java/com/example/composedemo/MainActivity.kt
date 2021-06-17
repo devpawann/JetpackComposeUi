@@ -5,23 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -29,21 +27,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Greeting(name = "World")
+            Main()
         }
     }
 }
 
 
 @Composable
-fun Greeting(name: String) {
+fun Main() {
     Scaffold(
+        modifier = Modifier.background(color = Color(0xffFAFBFB)),
         topBar = {
             TopAppBar(
                 modifier = Modifier.height(90.dp),
@@ -101,32 +99,75 @@ fun Greeting(name: String) {
                 }
             )
         },
-
-        ) {
-        BodyInner()
+    ) {
+        InnerBody()
     }
 
 }
 
 
 @Composable
-fun BodyInner() {
-    Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .background(color = Color.Green),
+fun InnerBody() {
+    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxSize(1f)) {
+        val message = remember { mutableStateOf("Hello") }
+        TextField(
 
-        horizontalArrangement = Arrangement.SpaceBetween
+            value = message.value,
+            onValueChange = { it ->
+                message.value = it
+            },
 
-    ) {
-        Text(text = "Hello name")
+
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(12.dp)
+                .background(color = Color.White)
+                .border(width = 1.dp, color = Color(0xffF2F2F3), shape = RoundedCornerShape(20.dp))
+                .clip(shape = RoundedCornerShape(20.dp)),
+
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+            ),
+            leadingIcon = {
+                IconButton(onClick = {/* Do Something*/ }) {
+                    Icon(
+                        Icons.Rounded.EmojiEmotions,
+                        null,
+                        Modifier.size(24.dp),
+                        tint = Color(0xff00C19C)
+
+
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(onClick = {/* Do Something*/ }) {
+                    Icon(
+                        Icons.Rounded.KeyboardVoice,
+                        null,
+                        Modifier
+                            .size(20.dp)
+                            .background(Color(0xff00C19C), shape = CircleShape,),
+
+                        tint = Color(0xffFFFFFF)
+
+
+                    )
+                }
+            },
+
+
+            )
+
+
     }
 }
+
 
 @Preview
 @Composable
 fun GreetingPreview() {
-    Greeting(name = "Pawan")
+    Main()
 
 }
 
